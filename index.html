@@ -854,60 +854,22 @@
         </section>
 
         <!-- Petition Section -->
-        <section class="petition-section" id="petition">
-            <h2 class="section-title">Signez la Pétition</h2>
-            <div class="form-container">
-                <div class="counter-section">
-                    <div class="signature-counter">
-                        <span id="counter">0</span> / 500 Signatures
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill" style="width: 0%">
-                            <span id="progressText" style="font-size: 0.8rem;"></span>
-                        </div>
-                    </div>
-                    <div class="progress-label">Objectif: Round 1 ✓</div>
-                </div>
+     <section class="petition-section" id="petition">
+    <h2 class="section-title">Signez la Pétition</h2>
+    <div class="form-container">
+      <div class="formzone">
+        <iframe 
+          src="https://docs.google.com/forms/d/e/1FAIpQLSd0BHlFGsouNT_WoajesXGK8PW5SaR0nmKJk-ueFa4cm2BiyQ/viewform?embedded=true"
+          width="100%" height="900" frameborder="0" marginheight="0" marginwidth="0">
+          Chargement…
+        </iframe>
+      </div>
+      <p style="color:#ff6b35; text-align:center; margin-top:1em;">
+        Les emails et réponses sont transmis et stockés directement chez Google.
+      </p>
+    </div>
+</section>
 
-                <form id="petitionForm" onsubmit="handleSubmit(event)">
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            placeholder="votre.email@example.com" 
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="pseudonym">Pseudonyme (Optionnel)</label>
-                        <input 
-                            type="text" 
-                            id="pseudonym" 
-                            name="pseudonym" 
-                            placeholder="Votre pseudo in-game ou nom"
-                        >
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input 
-                            type="checkbox" 
-                            id="support" 
-                            name="support" 
-                            required
-                        >
-                        <label for="support">
-                            Je soutiens la création d'ECST et accepte les conditions
-                        </label>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Planter le Drapeau 🚩</button>
-                    <div id="formMessage" class="form-message"></div>
-                </form>
-            </div>
-        </section>
 
         <!-- Testimonials Section -->
         <section class="testimonials" id="testimonials">
