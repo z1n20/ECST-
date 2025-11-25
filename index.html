@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECST - Tournoi Counter-Strike Francophone</title>
+    <style>
+        /* ==================== CSS VARIABLES & DESIGN SYSTEM ==================== */
+        :root {
+            --color-ct-cyan: #00d4ff;
+            --color-ct-cyan-dark: #0099cc;
+            --color-t-orange: #ff6b35;
+            --color-t-orange-dark: #cc5428;
+            --color-dark-bg: #0a0e27;
+            --color-darker-bg: #050811;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #b3b3b3;
+            --color-accent: #1a1f3a;
+            
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-mono: 'Courier New', monospace;
+            
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --glow-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            --glow-shadow-orange: 0 0 20px rgba(255, 107, 53, 0.3);
+        }
+
+        /* ==================== BASE STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--color-darker-bg) 0%, var(--color-dark-bg) 100%);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==================== NAVIGATION ==================== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--color-ct-cyan);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--color-ct-cyan), var(--color-t-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-ct-cyan);
+            text-shadow: 0 0 10px var(--color-ct-cyan);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-ct-cyan);
+            transition: width var(--transition-fast);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile nav toggle */
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--color-ct-cyan);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .nav-toggle {
+                display: block;
+            }
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        main {
+            margin-top: 60px;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+        }
+
+        /* Radar pulse animation */
+        @keyframes radarPulse {
+            0% {
+                width: 100px;
+                height: 100px;
+                opacity: 1;
+            }
+            100% {
+                width: 400px;
+                height: 400px;
+                opacity: 0;
+            }
+        }
+
+        .radar {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border: 3px solid var(--color-ct-cyan);
+            border-radius: 50%;
+            animation: radarPulse 2s infinite;
+            opacity: 0.3;
+        }
+
+        .radar::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: var(--color-ct-cyan);
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%) rotate(0deg);
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        /* Glitch animation */
+        @keyframes glitch {
+            0%, 100% { text-shadow: none; }
+            20% { text-shadow: -3px 0 var(--color-ct-cyan), 3px 0 var(--color-t-orange); }
+            40% { text-shadow: 3px 0 var(--color-ct-cyan), -3px 0 var(--color-t-orange); }
+            60% { text-shadow: -3px 0 var(--color-t-orange), 3px 0 var(--color-ct-cyan); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 4rem);
+            margin-bottom: 1rem;
+            color: var(--color-ct-cyan);
+            animation: glitch 3s infinite;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 900;
+        }
+
+        .tagline {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            color: var(--color-t-orange);
+            margin-bottom: 2rem;
+            font-style: italic;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all var(--transition-normal);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            transition: left var(--transition-normal);
+            z-index: -1;
+        }
+
+        .btn-primary {
+            background: var(--color-ct-cyan);
+            color: var(--color-dark-bg);
+            box-shadow: var(--glow-shadow);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-t-orange);
+            border: 2px solid var(--color-t-orange);
+            box-shadow: var(--glow-shadow-orange);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-t-orange);
+            color: var(--color-dark-bg);
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.6);
+            transform: translateY(-3px);
+        }
+
+        /* ==================== ARGUMENTS SECTION ==================== */
+        .arguments {
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.05));
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--color-ct-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-ct-cyan), var(--color-t-orange));
+            margin: 1rem auto 0;
+            display: block;
+        }
+
+        .args-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .arg-card {
+            background: rgba(26, 31, 58, 0.6);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all var(--transition-normal);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .arg-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .arg-card:hover {
+            border-color: var(--color-ct-cyan);
+            box-shadow: var(--glow-shadow);
+            transform: translateY(-10px);
+            background: rgba(26, 31, 58, 0.9);
+        }
+
+        .arg-card:hover::before {
+            opacity: 1;
+        }
+
+        .arg-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .arg-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--color-t-orange);
+            text-transform: uppercase;
+        }
+
+        .arg-card p {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ==================== STATS SECTION ==================== */
+        .stats {
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, rgba(0, 212, 255, 0.05), transparent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-box {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--color-t-orange);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all var(--transition-normal);
+        }
+
+        .stat-box:hover {
+            background: rgba(255, 107, 53, 0.2);
+            box-shadow: var(--glow-shadow-orange);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--color-t-orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        /* ==================== PETITION FORM ==================== */
+        .petition-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 107, 53, 0.05));
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(26, 31, 58, 0.8);
+            border: 2px solid var(--color-ct-cyan);
+            border-radius: 15px;
+            padding: 3rem;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            color: var(--color-ct-cyan);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .form-group input[type="email"],
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(5, 8, 17, 0.6);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 5px;
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+        }
+
+        .form-group input[type="email"]:focus,
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--color-ct-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            background: rgba(5, 8, 17, 0.8);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(179, 179, 179, 0.5);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--color-ct-cyan);
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(90deg, var(--color-ct-cyan), var(--color-t-orange));
+            color: var(--color-dark-bg);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .form-message.success {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--color-ct-cyan);
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .form-message.error {
+            background: rgba(255, 107, 53, 0.2);
+            color: var(--color-t-orange);
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==================== SIGNATURE COUNTER ==================== */
+        .counter-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .signature-counter {
+            font-size: 2rem;
+            color: var(--color-ct-cyan);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 107, 53, 0.2);
+            border: 2px solid var(--color-t-orange);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-ct-cyan), var(--color-t-orange));
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--color-dark-bg);
+        }
+
+        .progress-label {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ==================== TESTIMONIALS ==================== */
+        .testimonials {
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, transparent, rgba(255, 107, 53, 0.05));
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .testimonial {
+            background: rgba(26, 31, 58, 0.7);
+            border-left: 4px solid var(--color-t-orange);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all var(--transition-normal);
+        }
+
+        .testimonial:hover {
+            transform: translateX(10px);
+            border-left-color: var(--color-ct-cyan);
+            background: rgba(26, 31, 58, 0.9);
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--color-ct-cyan);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .testimonial-role {
+            color: var(--color-t-orange);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: rgba(5, 8, 17, 0.8);
+            border-top: 2px solid var(--color-ct-cyan);
+            padding: 2rem;
+            text-align: center;
+            color: var(--color-text-secondary);
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            margin-bottom: 1rem;
+        }
+
+        .footer-branding {
+            font-weight: bold;
+            color: var(--color-ct-cyan);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-tagline {
+            color: var(--color-t-orange);
+            font-style: italic;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .form-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            main {
+                margin-top: 50px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .hero-desc {
+                font-size: 0.95rem;
+            }
+
+            .args-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">ECST</div>
+        <ul class="nav-links">
+            <li><a href="#hero">Accueil</a></li>
+            <li><a href="#arguments">Avantages</a></li>
+            <li><a href="#stats">Statistiques</a></li>
+            <li><a href="#petition">Pétition</a></li>
+            <li><a href="#testimonials">Témoignages</a></li>
+        </ul>
+        <button class="nav-toggle">☰</button>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="radar"></div>
+            <div class="hero-content">
+                <h1>ECST</h1>
+                <p class="tagline">Ready or Not... Le Tournoi Arrive!</p>
+                <p class="hero-desc">
+                    Unissez-vous pour créer le plus grand tournoi Counter-Strike francophone. 
+                    Un événement dédié aux joueurs, aux équipes et aux fans de la communauté française.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="scrollTo('petition')">
+                        Planter le Drapeau 🚩
+                    </button>
+                    <button class="btn btn-secondary" onclick="shareInfo()">
+                        Appel de Renfort 📢
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arguments Section -->
+        <section class="arguments" id="arguments">
+            <h2 class="section-title">Pourquoi ECST?</h2>
+            <div class="args-grid">
+                <div class="arg-card">
+                    <div class="arg-icon">💰</div>
+                    <h3>Full Buy</h3>
+                    <p>
+                        Dotations massives et bourses attractives pour récompenser les meilleures équipes. 
+                        Des prize pools comparables aux organisateurs ESL, PGL et BLAST.
+                    </p>
+                </div>
+
+                <div class="arg-card">
+                    <div class="arg-icon">🎯</div>
+                    <h3>Eco Rush</h3>
+                    <p>
+                        Qualifications rapides et accessibles pour tous les niveaux. 
+                        Des plateformes de sélection pour que chaque équipe trouve sa chance.
+                    </p>
+                </div>
+
+                <div class="arg-card">
+                    <div class="arg-icon">🏆</div>
+                    <h3>Standards Pro</h3>
+                    <p>
+                        Format et standards des plus grands tournois internationaux. 
+                        Diffusion en live, production haute qualité, cadre professionnel.
+                    </p>
+                </div>
+
+                <div class="arg-card">
+                    <div class="arg-icon">🌍</div>
+                    <h3>Communauté Française</h3>
+                    <p>
+                        Placer la communauté francophone au cœur de l'esports international. 
+                        Développer des talents comme NiKo, ZywOo et S1mple depuis la France.
+                    </p>
+                </div>
+
+                <div class="arg-card">
+                    <div class="arg-icon">🗺️</div>
+                    <h3>Cartes Majeurs</h3>
+                    <p>
+                        Jeu sur les cartes les plus compétitives: Mirage, Nuke, Inferno, 
+                        Dust II et Ancient. Stratégies avancées et gameplay d'élite.
+                    </p>
+                </div>
+
+                <div class="arg-card">
+                    <div class="arg-icon">🚀</div>
+                    <h3>Lancer les Carrières</h3>
+                    <p>
+                        Offrir une plateforme aux jeunes talents pour se faire connaître. 
+                        Scouting, sponsoring et opportunités professionnelles garanties.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats" id="stats">
+            <h2 class="section-title">Chiffres du Secteur</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">50M+</div>
+                    <div class="stat-label">Joueurs Actifs CS2</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">$10M+</div>
+                    <div class="stat-label">Prize Pools/An</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Équipes Pro Tier 1</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Cartes Principales</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">ESL, PGL, BLAST</div>
+                    <div class="stat-label">Organisateurs Leaders</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">ZywOo #1</div>
+                    <div class="stat-label">Légende Française</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Petition Section -->
+        <section class="petition-section" id="petition">
+            <h2 class="section-title">Signez la Pétition</h2>
+            <div class="form-container">
+                <div class="counter-section">
+                    <div class="signature-counter">
+                        <span id="counter">0</span> / 500 Signatures
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%">
+                            <span id="progressText" style="font-size: 0.8rem;"></span>
+                        </div>
+                    </div>
+                    <div class="progress-label">Objectif: Round 1 ✓</div>
+                </div>
+
+                <form id="petitionForm" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="votre.email@example.com" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pseudonym">Pseudonyme (Optionnel)</label>
+                        <input 
+                            type="text" 
+                            id="pseudonym" 
+                            name="pseudonym" 
+                            placeholder="Votre pseudo in-game ou nom"
+                        >
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="support" 
+                            name="support" 
+                            required
+                        >
+                        <label for="support">
+                            Je soutiens la création d'ECST et accepte les conditions
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Planter le Drapeau 🚩</button>
+                    <div id="formMessage" class="form-message"></div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials" id="testimonials">
+            <h2 class="section-title">Témoignages</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="testimonial-author">ZywOo</div>
+                    <div class="testimonial-role">Joueur Pro • Natus Vincere</div>
+                    <div class="testimonial-text">
+                        "ECST représente l'avenir du CS français. C'est le moment de donner 
+                        aux talents locaux la plateforme mondiale qu'ils méritent. GG WP!"
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-author">Thorin</div>
+                    <div class="testimonial-role">Caster & Analyste</div>
+                    <div class="testimonial-text">
+                        "La scène francophone a besoin d'un tournoi de cette calibre. 
+                        ECST pourrait rivaliser avec les majeurs internationaux. 
+                        C'est visionnaire!"
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-author">MrSamurai</div>
+                    <div class="testimonial-role">Coach Stratégique</div>
+                    <div class="testimonial-text">
+                        "Enfin une initiative qui unit la communauté française. 
+                        Les standards d'ESL et PGL + la passion locale = 
+                        le tournoi que nous attendions tous!"
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-branding">ECST - Evénement Counter-Strike Tournoi</div>
+            <div class="footer-tagline">La Plateforme des Champions Français</div>
+            <div class="footer-text">
+                GG WP 🎮 | Powered by auxEVT • Esports Community
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        // Store signatures in browser memory (no persistence between sessions)
+        let signatures = [];
+
+        // Initialize counter display
+        function updateCounter() {
+            const count = signatures.length;
+            document.getElementById('counter').textContent = count;
+            
+            // Update progress bar
+            const percentage = Math.min((count / 500) * 100, 100);
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = percentage + '%';
+            
+            // Show percentage in progress bar
+            if (percentage > 10) {
+                document.getElementById('progressText').textContent = Math.round(percentage) + '%';
+            }
+        }
+
+        // ==================== FORM HANDLING ====================
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const pseudonym = document.getElementById('pseudonym').value.trim() || 'Anonyme';
+            const support = document.getElementById('support').checked;
+            const messageEl = document.getElementById('formMessage');
+
+            // Validation
+            if (!email) {
+                showMessage('L\'email est requis!', 'error', messageEl);
+                return;
+            }
+
+            if (!support) {
+                showMessage('Veuillez accepter les conditions!', 'error', messageEl);
+                return;
+            }
+
+            // Check for duplicate email
+            if (signatures.some(sig => sig.email === email)) {
+                showMessage('Vous avez déjà signé la pétition!', 'error', messageEl);
+                return;
+            }
+
+            // Add signature
+            signatures.push({
+                email: email,
+                pseudonym: pseudonym,
+                timestamp: new Date().toLocaleTimeString('fr-FR')
+            });
+
+            // Show success message
+            showMessage(
+                `Merci ${pseudonym}! Vous avez planté le drapeau! 🚩`, 
+                'success', 
+                messageEl
+            );
+
+            // Reset form
+            document.getElementById('petitionForm').reset();
+
+            // Update counter with animation
+            updateCounter();
+
+            // Hide message after 3 seconds
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 3000);
+        }
+
+        function showMessage(text, type, element) {
+            element.textContent = text;
+            element.className = `form-message ${type}`;
+            element.style.display = 'block';
+        }
+
+        // ==================== UTILITIES ====================
+        // Smooth scroll to section
+        function scrollTo(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Share functionality
+        function shareInfo() {
+            const shareText = `Rejoignez la pétition pour ECST - le plus grand tournoi Counter-Strike francophone! 🚩 Ready or Not... Le Tournoi Arrive!`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ECST - Pétition',
+                    text: shareText,
+                    url: window.location.href
+                }).catch(err => {
+                    console.log('Erreur:', err);
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Message copié au presse-papiers! 📋');
+                });
+            }
+        }
+
+        // Mobile nav toggle
+        document.querySelector('.nav-toggle').addEventListener('click', () => {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCounter();
+        });
+
+        // Optional: Add some demo signatures on load for visual effect
+        function addDemoSignatures() {
+            const demoSigs = [
+                { email: 'player1@ecst.fr', pseudonym: 'S1mple_Fr', timestamp: '14:32:15' },
+                { email: 'player2@ecst.fr', pseudonym: 'NiKo_Academy', timestamp: '14:31:42' },
+                { email: 'player3@ecst.fr', pseudonym: 'ZywOo_Fan', timestamp: '14:30:08' },
+            ];
+            
+            signatures = demoSigs;
+            updateCounter();
+        }
+
+        // Uncomment to show demo signatures on load
+        // addDemoSignatures();
+    </script>
+</body>
+</html>
