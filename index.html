@@ -868,6 +868,19 @@
         Les emails et réponses sont transmis et stockés directement chez Google.
       </p>
     </div>
+         <div style="width:100%;max-width:400px;margin:20px 0;">
+  <div style="background:linear-gradient(135deg, #050811 0%, #0a0e27 100%);width:100%;height:24px;border-radius:12px;overflow:hidden;border:1px solid #0099cc;">
+    <div id="progressBar" style="
+      background: linear-gradient(90deg, #00d4ff, #ff6b35);
+      height:100%; width:0%; transition: width 0.5s;
+      box-shadow: 0 0 10px #00d4ff;"
+    ></div>
+  </div>
+  <div style="color:#00d4ff;margin-top:4px;">
+    <span id="currentCount">0</span> / <span id="targetCount">100</span> signatures
+  </div>
+</div>
+
 </section>
 
 
@@ -1060,6 +1073,23 @@ function scrollToSection(sectionId) {
         section.scrollIntoView({ behavior: 'smooth' });
     }
 }
+</script>
+<script>
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQYjBpusnproFhBfrjgY8RrEsI2nbuf7-nhaONUkoG0yVYmeQRssaNn4hO681JZ82CKV-kzPU2FlgQl/gviz/tq?tqx=out:json";
+const target = 100; // Change selon ton objectif
+
+fetch(url)
+  .then(response => response.text())
+  .then(data => {
+    const json = JSON.parse(data.substr(47).slice(0, -2));
+    const count = json.table.rows.length;
+
+    document.getElementById('currentCount').textContent = count;
+    document.getElementById('targetCount').textContent = target;
+
+    const percent = Math.min((count / target) * 100, 100);
+    document.getElementById('progressBar').style.width = percent + '%';
+  });
 </script>
 
 </body>
