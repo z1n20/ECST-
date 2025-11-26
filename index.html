@@ -1074,24 +1074,36 @@ function scrollToSection(sectionId) {
     }
 }
 </script>
+
+</script>
 <script>
 const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQYjBpusnproFhBfrjgY8RrEsI2nbuf7-nhaONUkoG0yVYmeQRssaNn4hO681JZ82CKV-kzPU2FlgQl/gviz/tq?tqx=out:json";
-const target = 150; // Ton véritable objectif
+const target = 150;
 
 fetch(url)
   .then(response => response.text())
   .then(data => {
     const json = JSON.parse(data.substr(47).slice(0, -2));
-    const count = Math.max(0, json.table.rows.length - 1);  // S'assure que le nombre n'est jamais négatif
+    // Certains Google Forms n'ont **pas** d'entête (selon config) : ajuste la ligne ci-dessous si besoin !
+    // Normalement, la première ligne = entête, donc on fait -1 (car la première ligne n'est PAS une réponse)
+    let count = json.table.rows.length - 1;
+    // Parfois, si jamais pas d'entête à exclure : commente la ligne du dessus et dé-commente celle-ci :
+    // let count = json.table.rows.length;
+
+    count = Math.max(0, count);
 
     document.getElementById('currentCount').textContent = count;
     document.getElementById('targetCount').textContent = target;
 
     const percent = Math.min((count / target) * 100, 100);
     document.getElementById('progressBar').style.width = percent + '%';
+  })
+  .catch(e => {
+    document.getElementById('currentCount').textContent = '?';
+    document.getElementById('progressBar').style.width = '0';
+    console.error('Erreur récupération Google Sheet', e);
   });
 </script>
-
 
 </body>
 </html>
