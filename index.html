@@ -747,9 +747,9 @@
                     Un événement dédié aux joueurs, aux équipes et aux fans de la communauté française.
                 </p>
                 <div class="hero-buttons">
-                    <button class="btn btn-primary" onclick="scrollTo('petition')">
+                    <button class="btn btn-primary" onclick="scrollToSection('petition')">
                         Planter le Drapeau 🚩
-                    </button>
+                        </button>
                     <button class="btn btn-secondary" onclick="shareInfo()">
                         Appel de Renfort 📢
                     </button>
@@ -1003,8 +1003,8 @@
     const section = document.getElementById(sectionId);
     if (section) {
         section.scrollIntoView({ behavior: 'smooth' });
+        }
     }
-}
 
 
         // Share functionality
@@ -1053,5 +1053,14 @@
         // Uncomment to show demo signatures on load
         // addDemoSignatures();
     </script>
+    <script>
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+</script>
+
 </body>
 </html>
