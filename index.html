@@ -1076,13 +1076,13 @@ function scrollToSection(sectionId) {
 </script>
 <script>
 const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQYjBpusnproFhBfrjgY8RrEsI2nbuf7-nhaONUkoG0yVYmeQRssaNn4hO681JZ82CKV-kzPU2FlgQl/gviz/tq?tqx=out:json";
-const target = 100; // Change selon ton objectif
+const target = 150; // Ton véritable objectif
 
 fetch(url)
   .then(response => response.text())
   .then(data => {
     const json = JSON.parse(data.substr(47).slice(0, -2));
-    const count = json.table.rows.length;
+    const count = Math.max(0, json.table.rows.length - 1);  // S'assure que le nombre n'est jamais négatif
 
     document.getElementById('currentCount').textContent = count;
     document.getElementById('targetCount').textContent = target;
@@ -1091,6 +1091,7 @@ fetch(url)
     document.getElementById('progressBar').style.width = percent + '%';
   });
 </script>
+
 
 </body>
 </html>
